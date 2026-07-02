@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Банк заданий | Теоретические основы информатики</title>
+    <link href="https://fonts.googleapis.com/css2?family=Times+New+Roman&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Times New Roman', Georgia, serif; background: linear-gradient(145deg, #f0ebe5 0%, #e8e0d5 50%, #f0ebe5 100%); color: #2c2418; line-height: 1.5; min-height: 100vh; position: relative; font-size: 20px; }
+        body::before { content: "🕊️ 📖 🍃 ✨"; position: fixed; bottom: 20px; left: 20px; font-size: 80px; opacity: 0.06; pointer-events: none; z-index: 0; }
+        body::after { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.04"><path fill="#8B7355" d="M30,30 Q40,20 50,30 Q60,40 50,50 Q40,60 30,50 Q20,40 30,30Z M150,150 Q160,140 170,150 Q180,160 170,170 Q160,180 150,170 Q140,160 150,150Z M100,80 L110,70 L120,80 L110,90 Z"/><circle cx="170" cy="40" r="12" fill="#8B7355"/></svg>'); background-repeat: repeat; pointer-events: none; z-index: 0; }
+        .header { background: rgba(255, 248, 235, 0.94); backdrop-filter: blur(8px); padding: 2rem 2rem; text-align: center; border-bottom: 3px solid #c4a882; position: relative; z-index: 2; }
+        .header h1 { font-size: 3rem; font-weight: 800; color: #5c3d2e; }
+        .nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; }
+        .nav a { background: rgba(196, 168, 130, 0.15); color: #5c3d2e; text-decoration: none; padding: 0.8rem 1.8rem; border-radius: 60px; font-size: 1.1rem; font-weight: 700; transition: 0.25s; border: 1px solid rgba(196, 168, 130, 0.3); }
+        .nav a:hover { background: #c4a882; color: white; transform: translateY(-2px); }
+        .container { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; position: relative; z-index: 2; }
+        .filter-bar { display: flex; justify-content: center; gap: 1.2rem; margin-bottom: 2rem; flex-wrap: wrap; }
+        .filter-btn { background: rgba(255, 248, 235, 0.9); border: 1px solid #c4a882; padding: 0.8rem 2rem; border-radius: 60px; cursor: pointer; font-family: 'Times New Roman', serif; font-size: 1.1rem; font-weight: 800; color: #5c3d2e; transition: 0.2s; }
+        .filter-btn.active { background: #c4a882; color: white; border-color: #c4a882; }
+        .filter-btn:hover { background: #d4b892; color: white; transform: translateY(-2px); }
+        .class-block { background: rgba(255, 248, 235, 0.92); backdrop-filter: blur(4px); border-radius: 40px; padding: 2rem; margin-bottom: 2rem; border: 1px solid rgba(196, 168, 130, 0.3); }
+        .class-title { font-size: 2.2rem; font-weight: 800; color: #5c3d2e; margin-bottom: 1.5rem; border-bottom: 3px solid #c4a882; padding-bottom: 0.5rem; display: inline-block; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #d4c4b0; padding: 16px; vertical-align: top; text-align: left; }
+        th { background: rgba(196, 168, 130, 0.2); font-weight: 800; color: #5c3d2e; font-size: 1.15rem; }
+        td { font-style: normal; font-weight: 600; color: #3a2a1a; font-size: 1rem; line-height: 1.45; }
+        .badge { background: linear-gradient(135deg, #c4a882, #a0845c); color: white; padding: 0.3rem 1.2rem; border-radius: 40px; font-size: 0.85rem; font-weight: 800; display: inline-block; letter-spacing: 0.5px; }
+        .copy-btn { background: rgba(196, 168, 130, 0.2); border: 1px solid #c4a882; border-radius: 40px; padding: 0.5rem 1.2rem; cursor: pointer; font-family: 'Times New Roman', serif; font-size: 0.9rem; font-weight: 800; color: #5c3d2e; transition: 0.2s; }
+        .copy-btn:hover { background: #c4a882; color: white; transform: translateY(-2px); }
+        .btn-group { display: flex; justify-content: space-between; margin-top: 2.5rem; gap: 1.5rem; flex-wrap: wrap; }
+        .btn-nav { background: linear-gradient(135deg, #c4a882, #a0845c); color: white; padding: 1rem 2.2rem; border-radius: 60px; text-decoration: none; font-weight: 800; display: inline-flex; align-items: center; gap: 12px; transition: 0.25s; font-size: 1.15rem; }
+        .btn-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(160, 132, 92, 0.3); }
+        .footer { text-align: center; padding: 1.5rem; background: rgba(255, 248, 235, 0.85); margin-top: 2rem; font-size: 1rem; color: #7a5a48; border-top: 1px solid rgba(196, 168, 130, 0.3); font-style: italic; font-weight: 500; }
+        @media (max-width: 700px) { th, td { display: block; width: 100%; } .container { padding: 0 1rem; } .class-title { font-size: 1.6rem; } .header h1 { font-size: 2.2rem; } .nav a { padding: 0.5rem 1rem; font-size: 0.9rem; } th, td { font-size: 0.9rem; } }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1>📋 Банк трехуровневых заданий</h1>
+    <div class="nav">
+        <a href="index.html"><i class="fas fa-feather-alt"></i> Главная</a>
+        <a href="tasks.html"><i class="fas fa-tasks"></i> Банк заданий</a>
+        <a href="techmaps.html"><i class="fas fa-book-open"></i> Тех.карты</a>
+        <a href="recommend.html"><i class="fas fa-lightbulb"></i> Рекомендации</a>
+        <a href="umk.html"><i class="fas fa-layer-group"></i> Сравнение УМК</a>
+        <a href="feedback.html"><i class="fas fa-star"></i> Оценка</a>
+    </div>
+</div>
+<div class="container">
+    <div class="filter-bar">
+        <button class="filter-btn active" data-class="all">🌿 Все классы</button>
+        <button class="filter-btn" data-class="7">📖 7 класс</button>
+        <button class="filter-btn" data-class="8">🔢 8 класс</button>
+        <button class="filter-btn" data-class="9">🍃 9 класс</button>
+    </div>
+    <div id="tasks-container"></div>
+    <div class="btn-group">
+        <a href="index.html" class="btn-nav"><i class="fas fa-arrow-left"></i> На главную</a>
+        <a href="techmaps.html" class="btn-nav">К тех.картам <i class="fas fa-arrow-right"></i></a>
+    </div>
+</div>
+<div class="footer">🕊️ Все задания структурированы по уровням: базовый, повышенный, высокий. Нажмите 📋 чтобы скопировать задание.</div>
+
+<script>
+function copyText(text, btn) { navigator.clipboard.writeText(text); btn.innerHTML = '✓'; setTimeout(() => { btn.innerHTML = '📋'; }, 1500); }
+
+const tasksData = {
+    7: [
+        ["Информация и информационные процессы", "Базовый", "Задание «Данные или информация?» Заполните таблицу. Записи: «36,6»; «7А – кабинет 24»; «+7 °C»; «01000001»; фотография расписания; слово «ветер». Укажите: данные или информация? При каком условии станут информацией?"],
+        ["Информация и информационные процессы", "Повышенный", "Задание «Один знак – разный смысл». Сравните две ситуации: ученик видит «7А – кабинет 24» перед уроком / посторонний человек. Для кого информация, для кого данные? Почему ценность разная?"],
+        ["Информация и информационные процессы", "Высокий", "Задание «Информационный маршрут». Выберите школьную ситуацию (переход в кабинет, получение ДЗ, запись на кружок, поиск книги). Опишите путь: источник → сообщение → форма → канал → получатель → результат. Где возможны потери?"],
+        ["Представление информации", "Базовый", "Задание «Расшифруй сообщение». Код: А=00, Б=01, В=10, Г=11. Расшифруйте 00 10 01 11. Закодируйте «БАГ». Почему без таблицы восстановить нельзя?"],
+        ["Представление информации", "Повышенный", "Задание «Исправь код». Ученик закодировал: книга-0, ручка-1, тетрадь-10, линейка-11. Сообщение «101» неоднозначно. Найдите проблему. Предложите исправленный вариант для однозначности."],
+        ["Представление информации", "Высокий", "Задание «Код для школьного квеста». 8 объектов: кабинет, библиотека, столовая, спортзал, актовый зал, лестница, вход, гардероб. Разработайте двоичный код (однозначный, минимальной длины). Объясните выбор."],
+        ["Кодирование и объём информации", "Базовый", "Задание «Сколько бит нужно?» Алфавит из 16 символов, сообщение из 12 символов. Определите бит на символ и общий объём."],
+        ["Кодирование и объём информации", "Повышенный", "Задание «Какой код выгоднее?» 8 объектов: способ 1 (4 бита), способ 2 (3 бита). Какой экономнее? Почему 2 бита недостаточно?"],
+        ["Кодирование и объём информации", "Высокий", "Задание «Экономный код». 10 команд робота: вперёд, назад, стоп, вправо, влево, звук, свет, пауза, старт, повтор. Найдите минимальную длину кода, составьте таблицу, объясните свободные комбинации."]
+    ],
+    8: [
+        ["Системы счисления", "Базовый", "Задание «Разложи число по разрядам». Запишите 110101₂ в развёрнутой форме, переведите в десятичную систему."],
+        ["Системы счисления", "Повышенный", "Задание «Ошибка в переводе». Ученик перевёл 101101₂ = 47₁₀. Проверьте, найдите ошибку (правильный ответ: 45₁₀), объясните причину."],
+        ["Системы счисления", "Высокий", "Задание «Где запись короче?» Переведите 25, 64, 127, 255 из десятичной в 2, 8, 16 системы. Сравните длину записи, сделайте вывод."],
+        ["Арифметические операции в системах счисления", "Базовый", "Задание «Сложение по правилам». Выполните сложение: 1011₂ + 1101₂. Запишите переносы по разрядам. Проверьте результат переводом в десятичную систему."],
+        ["Арифметические операции в системах счисления", "Повышенный", "Задание «Ловушка переноса». Проверьте: 111₂ + 101₂ = 1010₂. Если неверно — исправьте и объясните ошибку."],
+        ["Арифметические операции в системах счисления", "Высокий", "Задание «Создай проверочную карточку». Составьте три примера на двоичное сложение: простой, с одним переносом, с несколькими переносами. Подготовьте правильное решение и специально допущенную ошибку."],
+        ["Элементы математической логики", "Базовый", "Задание «Высказывание или нет?» Определите: «Число 8 чётное»; «Откройте тетрадь»; «x > 5»; «Все двоичные числа состоят из 0 и 1». Можно ли определить истинность?"],
+        ["Элементы математической логики", "Повышенный", "Задание «Смысл операции меняется». A = «ученик выполнил д/з», B = «ученик прошёл тест». Сравните A И B, A ИЛИ B, НЕ A. Объясните отличие логического «или» от бытового."],
+        ["Элементы математической логики", "Высокий", "Задание «Построй правило допуска». В школьный медиаклуб допускаются: (кружок И разрешение) ИЛИ отдельное разрешение учителя. Обозначьте A, B, C, составьте выражение, таблицу истинности."]
+    ],
+    9: [
+        ["Моделирование как метод познания", "Базовый", "Задание «Что является моделью?» Карта этажа, сам этаж, расписание, схема маршрута, фото класса, таблица дежурств. Заполните: объект – модель – какие свойства отражены."],
+        ["Моделирование как метод познания", "Повышенный", "Задание «Одна ситуация – две модели». Маршрут от входа до кабинета (текст и схема). Сравните модели по удобству, точности, наглядности. Какая удобнее для нового ученика?"],
+        ["Моделирование как метод познания", "Высокий", "Задание «Модель школьной библиотеки». Объекты: книга, автор, читатель, дата выдачи, срок возврата. Постройте модель (таблица или схема). Какие данные существенны?"],
+        ["Табличные модели", "Базовый", "Задание «Таблица успеваемости». Дано: Аня (5 по инф., 4 по мат.); Игорь (4 по инф., 5 по мат.); Марина (5 по инф., 5 по мат.). Представьте данные в виде таблицы. Укажите строки, столбцы, заголовки."],
+        ["Табличные модели", "Повышенный", "Задание «Какая таблица удобнее?» Две таблицы о кружках: (ученики-кружки) и (кружки-участники). Какая удобнее для поиска ученика, какая для анализа работы кружков?"],
+        ["Табличные модели", "Высокий", "Задание «Спроектируй таблицу». Учёт оборудования: компьютеры, проектор, принтер, доска. Поля: номер, название, состояние, место, ответственный, дата проверки. Объясните выбор полей."],
+        ["Графы", "Базовый", "Задание «Найди путь». На схеме кабинетов вершины – кабинеты, рёбра – переходы. От кабинета 12 до кабинета 28: сколько рёбер нужно пройти? Запишите один возможный путь."],
+        ["Графы", "Повышенный", "Задание «Маршрут невозможен». Ученик построил маршрут: А–B–D–F. Проверьте по схеме. Найдите ошибку, предложите правильный маршрут. Почему граф удобен для проверки связей?"],
+        ["Графы", "Высокий", "Задание «Построй граф связей». Школьная сеть: сервер, комп учителя, 3 уч. компьютера, принтер, роутер (≥6 вершин). Что произойдёт при отказе узла? Определите путь ученика к принтеру."]
+    ]
+};
+
+function renderTasks(cls) {
+    const container = document.getElementById('tasks-container');
+    if (!container) return;
+    container.innerHTML = '';
+    const classes = cls === 'all' ? [7,8,9] : [parseInt(cls)];
+    for (let c of classes) {
+        if (!tasksData[c]) continue;
+        let block = document.createElement('div');
+        block.className = 'class-block';
+        block.innerHTML = `<div class="class-title">✨ ${c} класс</div><table><thead><tr><th>📚 Тема</th><th>🎯 Уровень</th><th>📝 Задание</th><th></th></tr></thead><tbody></tbody>表`;
+        let tbody = block.querySelector('tbody');
+        for (let t of tasksData[c]) {
+            let row = tbody.insertRow();
+            row.insertCell(0).innerText = t[0];
+            row.insertCell(1).innerHTML = `<span class="badge">${t[1]}</span>`;
+            row.insertCell(2).innerText = t[2];
+            let btnCell = row.insertCell(3);
+            let btn = document.createElement('button');
+            btn.className = 'copy-btn';
+            btn.innerHTML = '📋';
+            btn.onclick = (function(text, button) {
+                return function() { copyText(text, button); };
+            })(t[2], btn);
+            btnCell.appendChild(btn);
+        }
+        container.appendChild(block);
+    }
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.onclick = () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderTasks(btn.dataset.class);
+    };
+});
+renderTasks('all');
+</script>
+
+<div style="position: fixed; bottom: 25px; right: 25px; z-index: 1000;" id="chatBot">
+    <div id="chatIcon" style="background: linear-gradient(135deg, #c4a882, #a0845c); width: 65px; height: 65px; border-radius: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.15);"><i class="fas fa-feather-alt" style="color: white; font-size: 2rem;"></i></div>
+    <div id="chatWindow" style="display: none; position: absolute; bottom: 75px; right: 0; width: 380px; background: #fffef8; border-radius: 32px; overflow: hidden; border: 1px solid #c4a882;">
+        <div style="background: linear-gradient(135deg, #c4a882, #a0845c); padding: 15px 20px; color: white; display: flex; justify-content: space-between; font-weight: 800; font-size: 1.1rem;"><span><i class="fas fa-feather-alt"></i> Методический помощник</span><i class="fas fa-times" onclick="document.getElementById('chatWindow').style.display='none'" style="cursor:pointer"></i></div>
+        <div id="chatMessages" style="height: 300px; overflow-y: auto; padding: 15px; background: #fefaf5;"><div style="background: #f0ebe5; color: #5c3d2e; padding: 12px 16px; border-radius: 24px; margin-bottom: 12px; max-width: 85%; font-size: 0.95rem; font-style: italic;">Здравствуйте! Чем могу помочь?</div></div>
+        <div style="display: flex; padding: 12px; background: white; border-top: 1px solid #e8dfd3;"><input type="text" id="chatInput" placeholder="Напишите вопрос..." style="flex:1; padding: 12px 18px; border-radius: 50px; border: 1px solid #d4c4b0; font-family: 'Times New Roman', serif; font-size: 0.95rem;"><button onclick="sendMessage()" style="background: #c4a882; border: none; width: 48px; height: 48px; border-radius: 24px; cursor: pointer;"><i class="fas fa-paper-plane" style="color: white; font-size: 1.2rem;"></i></button></div>
+    </div>
+</div>
+<script>
+    document.getElementById('chatIcon').onclick = function() { const w = document.getElementById('chatWindow'); w.style.display = w.style.display === 'none' ? 'block' : 'none'; };
+    function sendMessage() { const input = document.getElementById('chatInput'); const msg = input.value.trim(); if (!msg) return; const mDiv = document.getElementById('chatMessages'); mDiv.innerHTML += `<div style="background: #c4a882; color: white; padding: 10px 14px; border-radius: 20px; margin-bottom: 12px; margin-left: auto; max-width: 85%; font-size: 0.95rem; font-style: italic;">${msg}</div>`; input.value = ''; mDiv.scrollTop = mDiv.scrollHeight; setTimeout(() => { let r = ''; const q = msg.toLowerCase(); if (q.includes('7 класс')) r = '📚 В 7 классе: информация/данные, кодирование, алфавит. Задания с фильтром 7 класс.'; else if (q.includes('8 класс')) r = '🔢 8 класс: системы счисления и логические операции.'; else if (q.includes('9 класс')) r = '🍃 9 класс: моделирование, таблицы, графы.'; else r = '🕊️ Напишите "7 класс", "8 класс" или тему занятия.'; mDiv.innerHTML += `<div style="background: #f0ebe5; color: #5c3d2e; padding: 10px 14px; border-radius: 20px; margin-bottom: 12px; max-width: 85%; font-size: 0.95rem; font-style: italic;">🤍 ${r}</div>`; mDiv.scrollTop = mDiv.scrollHeight; }, 300); }
+    document.getElementById('chatInput').addEventListener('keypress', function(e) { if (e.key === 'Enter') sendMessage(); });
+</script>
+</body>
+</html>
